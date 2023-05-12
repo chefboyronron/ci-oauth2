@@ -36,6 +36,31 @@
  * @filesource
  */
 
+/**
+ * Third Party Library: dotenv
+ */
+require __DIR__.'/vendor/autoload.php';
+
+try {
+	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+	$dotenv->load();
+} catch (Exception $e) {
+	// print the error message and proceed so that the page will still load
+	echo 'Unable to read any of the environment file(s).<br/>See <strong>env_sample</strong> for your guide.';
+}
+
+if (!function_exists('get_env')) {
+	function get_env($string) {
+		if(isset($_ENV[$string])){
+			return $_ENV[$string];
+		}else{
+			return getenv($string);
+		}
+		echo '<b>The application cannot run without the ' . $string . ' value. Please check the .env file.';
+		exit;
+	}
+}
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
