@@ -7,6 +7,7 @@ class Welcome extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('Oauth');
+		$this->load->model('blog_model');
 	}
 
 	public function index()
@@ -35,6 +36,14 @@ class Welcome extends CI_Controller {
 			$oauth->server->getResponse()->send();
 			die;
 		}
-		echo json_encode(array('success' => true, 'message' => 'You accessed my APIs!'));
+		// echo json_encode(array('success' => true, 'message' => 'You accessed my APIs!'));
+	}
+
+	public function get_blogs()
+	{
+		$this->validate_token();
+		$blogs = $this->blog_model->get_all_blogs();
+		$data = json_encode($blogs);
+		echo $data;
 	}
 }
